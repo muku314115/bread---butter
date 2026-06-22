@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boulangerie Dorée — Artisan Baker</title>
+  <meta name="description" content="Boulangerie Dorée — pain artisanal, viennoiseries fraîches et pâtisseries faites avec amour. Ouvert tous les jours." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Tokens ────────────────────────────────────────────── */
+    :root {
+      --cream:      #faf6f0;
+      --cream-dark: #f0e8d8;
+      --wheat:      #e8d5b0;
+      --caramel:    #c9913a;
+      --caramel-dk: #a5711e;
+      --brown:      #5a3a1a;
+      --brown-deep: #3a2008;
+      --text:       #2e1f0e;
+      --text-mid:   #6b4c2a;
+      --text-soft:  #9e7c52;
+      --white:      #ffffff;
+
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans:  'Jost', system-ui, sans-serif;
+
+      --radius-sm: 4px;
+      --radius:    12px;
+      --radius-lg: 24px;
+
+      --shadow-soft: 0 4px 24px rgba(90,58,26,.10);
+      --shadow-card: 0 2px 16px rgba(90,58,26,.12);
+    }
+
+    /* ── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ── Utilities ─────────────────────────────────────────── */
+    .container {
+      max-width: 1100px;
+      margin-inline: auto;
+      padding-inline: 24px;
+    }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-block: 8px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--wheat);
+    }
+    .divider-ornament {
+      color: var(--caramel);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    /* ── Nav ───────────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(250,246,240,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(200,160,80,.18);
+      transition: box-shadow .3s ease;
+    }
+    .nav.scrolled { box-shadow: 0 2px 20px rgba(90,58,26,.10); }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .nav-logo-main {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--brown);
+      letter-spacing: .04em;
+    }
+    .nav-logo-sub {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      transition: color .2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 100%;
+      height: 1px;
+      background: var(--caramel);
+      transition: right .25s ease;
+    }
+    .nav-links a:hover { color: var(--brown); }
+    .nav-links a:hover::after { right: 0; }
+    .nav-cta {
+      display: inline-block;
+      padding: 9px 22px;
+      background: var(--caramel);
+      color: var(--white) !important;
+      border-radius: var(--radius-sm);
+      font-size: 12px !important;
+      font-weight: 500 !important;
+      letter-spacing: .12em !important;
+      text-transform: uppercase;
+      transition: background .2s, transform .15s !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--caramel-dk) !important; transform: translateY(-1px); }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      background: none;
+      border: none;
+      aria-label: "Menu";
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--brown);
+      border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+
+    /* ── Hero ──────────────────────────────────────────────── */
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding-top: 68px;
+      overflow: hidden;
+    }
+    .hero-content {
+      padding: 80px 24px 80px 48px;
+      max-width: 560px;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--caramel);
+      margin-bottom: 24px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px; height: 1px;
+      background: var(--caramel);
+    }
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(52px, 6vw, 80px);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--brown-deep);
+      margin-bottom: 28px;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--caramel);
+    }
+    .hero-body {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--text-mid);
+      line-height: 1.8;
+      max-width: 420px;
+      margin-bottom: 44px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+    .btn-primary {
+      display: inline-block;
+      padding: 14px 34px;
+      background: var(--caramel);
+      color: var(--white);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      transition: background .2s, transform .15s, box-shadow .2s;
+    }
+    .btn-primary:hover {
+      background: var(--caramel-dk);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(165,113,30,.30);
+    }
+    .btn-primary:focus-visible {
+      outline: 3px solid var(--caramel);
+      outline-offset: 3px;
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 0;
+      color: var(--brown);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: .06em;
+      border-bottom: 1px solid var(--wheat);
+      transition: border-color .2s, color .2s;
+    }
+    .btn-outline:hover { color: var(--caramel); border-color: var(--caramel); }
+    .btn-outline:focus-visible { outline: 3px solid var(--caramel); outline-offset: 3px; }
+    .btn-outline svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform .2s; }
+    .btn-outline:hover svg { transform: translateX(4px); }
+
+    .hero-image-wrap {
+      position: relative;
+      height: 100%;
+      min-height: 600px;
+      overflow: hidden;
+    }
+    .hero-image-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .hero-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--cream) 0%, transparent 20%);
+    }
+
+    /* ── Hours banner ──────────────────────────────────────── */
+    .hours-banner {
+      background: var(--brown);
+      color: var(--cream);
+      padding: 16px 24px;
+    }
+    .hours-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px 40px;
+    }
+    .hours-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: .04em;
+    }
+    .hours-item-label {
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--wheat);
+      font-size: 11px;
+    }
+    .hours-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--caramel);
+    }
+
+    /* ── Section header ────────────────────────────────────── */
+    .section-header {
+      text-align: center;
+      max-width: 560px;
+      margin-inline: auto;
+      margin-bottom: 64px;
+    }
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--caramel);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(34px, 4vw, 52px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--brown-deep);
+      margin-bottom: 18px;
+    }
+    .section-title em { font-style: italic; color: var(--caramel); }
+    .section-body {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-mid);
+      line-height: 1.8;
+    }
+
+    /* ── Specialties ───────────────────────────────────────── */
+    .specialties {
+      padding: 100px 0;
+      background: var(--cream);
+    }
+    .specialties-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .specialty-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .specialty-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(90,58,26,.16);
+    }
+    .specialty-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+    }
+    .specialty-body {
+      padding: 28px;
+    }
+    .specialty-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      background: var(--cream-dark);
+      color: var(--caramel);
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .specialty-name {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--brown-deep);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .specialty-desc {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-soft);
+      line-height: 1.7;
+    }
+    .specialty-price {
+      margin-top: 20px;
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--caramel);
+    }
+
+    /* ── Story ─────────────────────────────────────────────── */
+    .story {
+      padding: 100px 0;
+      background: var(--cream-dark);
+    }
+    .story-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .story-images {
+      position: relative;
+    }
+    .story-img-main {
+      width: 80%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+    }
+    .story-img-accent {
+      position: absolute;
+      bottom: -24px;
+      right: 0;
+      width: 50%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: var(--radius);
+      border: 6px solid var(--cream-dark);
+      box-shadow: var(--shadow-card);
+    }
+    .story-content {
+      padding-right: 16px;
+    }
+    .story-quote {
+      font-family: var(--serif);
+      font-size: clamp(20px, 2.5vw, 28px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--brown);
+      border-left: 3px solid var(--caramel);
+      padding-left: 24px;
+      margin-bottom: 32px;
+    }
+    .story-text {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-mid);
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+    .story-signature {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-style: italic;
+      color: var(--caramel);
+      margin-top: 32px;
+    }
+    .story-signature-title {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    /* ── Values ────────────────────────────────────────────── */
+    .values {
+      padding: 80px 0;
+      background: var(--brown);
+    }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      text-align: center;
+    }
+    .value-item {}
+    .value-icon {
+      width: 52px; height: 52px;
+      margin-inline: auto;
+      margin-bottom: 18px;
+      background: rgba(255,255,255,.08);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .value-icon svg {
+      width: 24px; height: 24px;
+      stroke: var(--wheat);
+      fill: none;
+      stroke-width: 1.5;
+    }
+    .value-title {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 10px;
+    }
+    .value-text {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(240,232,216,.70);
+      line-height: 1.8;
+    }
+
+    /* ── Menu preview ──────────────────────────────────────── */
+    .menu-preview {
+      padding: 100px 0;
+      background: var(--cream);
+    }
+    .menu-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      border: 1px solid var(--wheat);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 56px;
+      width: fit-content;
+      margin-inline: auto;
+    }
+    .menu-tab {
+      padding: 12px 28px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .menu-tab.active {
+      background: var(--caramel);
+      color: var(--white);
+    }
+    .menu-tab:hover:not(.active) {
+      background: var(--cream-dark);
+      color: var(--brown);
+    }
+    .menu-tab:focus-visible { outline: 3px solid var(--caramel); outline-offset: -3px; }
+
+    .menu-list {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .menu-list.active { display: grid; }
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(200,160,80,.18);
+    }
+    .menu-item:nth-child(even) { padding-left: 40px; }
+    .menu-item-info {}
+    .menu-item-name {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--brown-deep);
+      margin-bottom: 4px;
+    }
+    .menu-item-desc {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-soft);
+    }
+    .menu-item-price {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--caramel);
+      white-space: nowrap;
+    }
+
+    /* ── Gallery strip ─────────────────────────────────────── */
+    .gallery {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      grid-template-rows: 240px 240px;
+      gap: 4px;
+      overflow: hidden;
+    }
+    .gallery-item {
+      overflow: hidden;
+    }
+    .gallery-item:first-child {
+      grid-row: span 2;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.04); }
+
+    /* ── Testimonials ──────────────────────────────────────── */
+    .testimonials {
+      padding: 100px 0;
+      background: var(--cream-dark);
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .testimonial-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 36px;
+      box-shadow: var(--shadow-card);
+    }
+    .testimonial-stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 18px;
+    }
+    .star {
+      width: 16px; height: 16px;
+      color: var(--caramel);
+    }
+    .testimonial-text {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.7;
+      color: var(--brown);
+      margin-bottom: 24px;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testimonial-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--cream-dark);
+    }
+    .testimonial-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--brown-deep);
+    }
+    .testimonial-location {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    /* ── Newsletter ────────────────────────────────────────── */
+    .newsletter {
+      padding: 80px 0;
+      background: var(--caramel);
+    }
+    .newsletter-inner {
+      text-align: center;
+      max-width: 540px;
+      margin-inline: auto;
+    }
+    .newsletter-title {
+      font-family: var(--serif);
+      font-size: clamp(32px, 4vw, 46px);
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+    .newsletter-sub {
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(255,255,255,.80);
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+    .newsletter-form {
+      display: flex;
+      gap: 0;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(58,32,8,.25);
+    }
+    .newsletter-input {
+      flex: 1;
+      padding: 16px 20px;
+      border: none;
+      font-family: var(--sans);
+      font-size: 14px;
+      background: rgba(255,255,255,.95);
+      color: var(--text);
+      outline: none;
+    }
+    .newsletter-input::placeholder { color: var(--text-soft); }
+    .newsletter-btn {
+      padding: 16px 28px;
+      background: var(--brown);
+      color: var(--cream);
+      border: none;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .newsletter-btn:hover { background: var(--brown-deep); }
+    .newsletter-btn:focus-visible { outline: 3px solid var(--white); outline-offset: -3px; }
+    .newsletter-note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: rgba(255,255,255,.6);
+    }
+
+    /* ── Contact / Footer ──────────────────────────────────── */
+    .contact {
+      padding: 100px 0 60px;
+      background: var(--brown-deep);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 60px;
+      padding-bottom: 60px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .contact-brand {}
+    .contact-logo {
+      font-family: var(--serif);
+      font-size: 30px;
+      font-weight: 300;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+    .contact-tagline {
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--wheat);
+      opacity: .6;
+      margin-bottom: 24px;
+    }
+    .contact-desc {
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(240,232,216,.55);
+      line-height: 1.9;
+      max-width: 280px;
+    }
+    .contact-social {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .social-link {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color .2s, background .2s;
+    }
+    .social-link:hover { border-color: var(--caramel); background: rgba(201,145,58,.12); }
+    .social-link svg { width: 16px; height: 16px; stroke: var(--wheat); fill: none; stroke-width: 1.5; }
+    .contact-heading {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 24px;
+    }
+    .contact-info-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+      align-items: flex-start;
+    }
+    .contact-info-item svg {
+      width: 16px; height: 16px;
+      stroke: var(--caramel);
+      fill: none;
+      stroke-width: 1.5;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .contact-info-text {
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(240,232,216,.65);
+      line-height: 1.7;
+    }
+    .footer-bottom {
+      padding-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(240,232,216,.35);
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      font-size: 12px;
+      color: rgba(240,232,216,.35);
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--wheat); }
+
+    /* ── Scroll animation ──────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ── Responsive ────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-content { padding: 60px 24px; max-width: 100%; }
+      .hero-image-wrap { min-height: 360px; }
+      .hero-image-overlay { background: linear-gradient(180deg, transparent 60%, var(--cream) 100%); }
+      .specialties-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
+      .story-inner { grid-template-columns: 1fr; gap: 48px; }
+      .story-img-accent { display: none; }
+      .story-img-main { width: 100%; }
+      .values-grid { grid-template-columns: repeat(2, 1fr); }
+      .menu-list { grid-template-columns: 1fr; }
+      .menu-item:nth-child(even) { padding-left: 0; }
+      .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 200px); }
+      .gallery-item:first-child { grid-row: span 1; }
+      .testimonials-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+    }
+    @media (max-width: 600px) {
+      .values-grid { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: 1fr; grid-template-rows: repeat(5, 220px); }
+      .newsletter-form { flex-direction: column; border-radius: var(--radius-sm); }
+      .hero-headline { font-size: 44px; }
+    }
+
+    /* ── Mobile menu ───────────────────────────────────────── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--brown);
+      transition: color .2s;
+    }
+    .mobile-menu a:hover { color: var(--caramel); }
+    .mobile-menu-close {
+      position: absolute;
+      top: 24px; right: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 28px;
+      color: var(--brown);
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Mobile menu overlay -->
+  <nav class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Navigation principale" aria-hidden="true">
+    <button class="mobile-menu-close" id="menuClose" aria-label="Fermer le menu">✕</button>
+    <a href="#specialites" onclick="closeMobileMenu()">Spécialités</a>
+    <a href="#histoire" onclick="closeMobileMenu()">Notre histoire</a>
+    <a href="#carte" onclick="closeMobileMenu()">La carte</a>
+    <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  </nav>
+
+  <!-- Navigation -->
+  <header class="nav" id="mainNav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo" aria-label="Boulangerie Dorée — Retour à l'accueil">
+        <span class="nav-logo-main">Boulangerie Dorée</span>
+        <span class="nav-logo-sub">Artisan Boulanger · Paris</span>
+      </a>
+      <nav class="nav-links" aria-label="Navigation principale">
+        <a href="#specialites">Spécialités</a>
+        <a href="#histoire">Notre histoire</a>
+        <a href="#carte">La carte</a>
+        <a href="#contact" class="nav-cta">Nous trouver</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="heroHeading">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Depuis 1987 — Paris, Montmartre</p>
+      <h1 class="hero-headline" id="heroHeading">
+        Le pain,<br>
+        <em>fait avec</em><br>
+        passion
+      </h1>
+      <p class="hero-body">
+        Chaque matin depuis l'aube, nous pétrissons, façonnons et cuisons
+        des pains au levain, des croissants feuilletés et des viennoiseries
+        qui embaument tout le quartier.
+      </p>
+      <div class="hero-actions">
+        <a href="#specialites" class="btn-primary">Découvrir nos pains</a>
+        <a href="#carte" class="btn-outline">
+          Voir la carte
+          <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="hero-image-wrap" aria-hidden="true">
+      <img
+        src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=900&q=80&auto=format&fit=crop"
+        alt="Boulanger artisan façonnant du pain"
+        loading="eager"
+        width="900" height="700"
+      />
+      <div class="hero-image-overlay"></div>
+    </div>
+  </section>
+
+  <!-- Hours banner -->
+  <div class="hours-banner" role="complementary" aria-label="Horaires d'ouverture">
+    <div class="container hours-inner">
+      <div class="hours-item">
+        <span class="hours-item-label">Lun – Ven</span>
+        <span class="hours-dot" aria-hidden="true"></span>
+        <span>7h00 – 20h00</span>
+      </div>
+      <div class="hours-item">
+        <span class="hours-item-label">Samedi</span>
+        <span class="hours-dot" aria-hidden="true"></span>
+        <span>6h30 – 20h30</span>
+      </div>
+      <div class="hours-item">
+        <span class="hours-item-label">Dimanche</span>
+        <span class="hours-dot" aria-hidden="true"></span>
+        <span>7h00 – 13h00</span>
+      </div>
+      <div class="hours-item">
+        <span class="hours-item-label">Adresse</span>
+        <span class="hours-dot" aria-hidden="true"></span>
+        <span>14, rue Lepic, Montmartre, Paris 18e</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Specialties -->
+  <section class="specialties" id="specialites" aria-labelledby="specTitle">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Nos Créations</span>
+        <h2 class="section-title" id="specTitle">Le meilleur de <em>notre fournil</em></h2>
+        <p class="section-body">Farine de qualité, levain naturel, gestes maîtrisés — chaque pièce est une promesse tenue.</p>
+      </div>
+      <div class="divider reveal"><span class="divider-ornament" aria-hidden="true">✦</span></div>
+      <br><br>
+      <div class="specialties-grid">
+        <article class="specialty-card reveal">
+          <img
+            class="specialty-img"
+            src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=600&q=80&auto=format&fit=crop"
+            alt="Baguette de tradition française"
+            loading="lazy" width="600" height="450"
+          />
+          <div class="specialty-body">
+            <span class="specialty-tag">Pain</span>
+            <h3 class="specialty-name">Baguette Tradition</h3>
+            <p class="specialty-desc">Croustillante dehors, alvéolée dedans. Notre baguette de tradition est fabriquée avec du levain naturel et une longue fermentation.</p>
+            <p class="specialty-price" aria-label="Prix : 1 euro 40">1,40 €</p>
+          </div>
+        </article>
+        <article class="specialty-card reveal">
+          <img
+            class="specialty-img"
+            src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&q=80&auto=format&fit=crop"
+            alt="Croissant au beurre feuilleté"
+            loading="lazy" width="600" height="450"
+          />
+          <div class="specialty-body">
+            <span class="specialty-tag">Viennoiserie</span>
+            <h3 class="specialty-name">Croissant au Beurre</h3>
+            <p class="specialty-desc">Feuilleté au beurre AOP de Charentes-Poitou. 36 couches de pâte levée feuilletée pour une texture incomparable.</p>
+            <p class="specialty-price" aria-label="Prix : 1 euro 60">1,60 €</p>
+          </div>
+        </article>
+        <article class="specialty-card reveal">
+          <img
+            class="specialty-img"
+            src="https://images.unsplash.com/photo-1607958996333-41aef7caefaa?w=600&q=80&auto=format&fit=crop"
+            alt="Pain au levain au sésame"
+            loading="lazy" width="600" height="450"
+          />
+          <div class="specialty-body">
+            <span class="specialty-tag">Pain Spécial</span>
+            <h3 class="specialty-name">Pain au Levain</h3>
+            <p class="specialty-desc">Notre levain centenaire donne à ce pain sa mie ouverte et son goût légèrement acidulé. En cuisson sur sole de pierre.</p>
+            <p class="specialty-price" aria-label="Prix : 6 euros 80">6,80 €</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="story" id="histoire" aria-labelledby="storyTitle">
+    <div class="container">
+      <div class="story-inner">
+        <div class="story-images reveal" aria-hidden="true">
+          <img
+            class="story-img-main"
+            src="https://images.unsplash.com/photo-1528736235302-52922df5c122?w=600&q=80&auto=format&fit=crop"
+            alt="L'intérieur chaleureux de la boulangerie"
+            loading="lazy" width="600" height="800"
+          />
+          <img
+            class="story-img-accent"
+            src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&q=80&auto=format&fit=crop"
+            alt="Pain sortant du four"
+            loading="lazy" width="400" height="400"
+          />
+        </div>
+        <div class="story-content reveal">
+          <span class="section-eyebrow">Notre histoire</span>
+          <h2 class="section-title" id="storyTitle">Un savoir-faire <em>transmis</em></h2>
+          <blockquote class="story-quote">
+            "Le bon pain ne se fabrique pas — il se cultive. Comme un jardin, ça demande du temps, de l'amour et du respect."
+          </blockquote>
+          <p class="story-text">
+            Fondée en 1987 par Henri Moreau, compagnon boulanger de son état, la Boulangerie Dorée a toujours choisi l'exigence sur la facilité. Pas de mixes industriels, pas de pré-mixes : uniquement de la farine fraîche d'un moulin bourguignon, de l'eau, du sel, et notre levain que l'on entretient depuis 38 ans.
+          </p>
+          <p class="story-text">
+            Aujourd'hui, sa fille Sophie et son gendre Marc perpétuent cette tradition tout en apportant de nouvelles créations — sourdoughs aux inclusions, viennoiseries revisitées, et pâtisseries de saison qui changent chaque semaine.
+          </p>
+          <p class="story-signature">Sophie &amp; Marc Moreau</p>
+          <p class="story-signature-title">Artisans boulangers — 2e génération</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="values" aria-label="Nos engagements">
+    <div class="container">
+      <div class="values-grid">
+        <div class="value-item reveal">
+          <div class="value-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="value-title">Ingrédients purs</h3>
+          <p class="value-text">Farine Label Rouge, beurre AOP, sel de Guérande. Rien que le nécessaire.</p>
+        </div>
+        <div class="value-item reveal">
+          <div class="value-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3 class="value-title">Cuisson à l'aube</h3>
+          <p class="value-text">Nos boulangers commencent à 3h du matin pour que le pain soit frais à l'ouverture.</p>
+        </div>
+        <div class="value-item reveal">
+          <div class="value-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 class="value-title">Ancrage local</h3>
+          <p class="value-text">Approvisionnement à moins de 200 km : farine, beurre, œufs, fruits de saison.</p>
+        </div>
+        <div class="value-item reveal">
+          <div class="value-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <h3 class="value-title">Fait avec amour</h3>
+          <p class="value-text">Chaque tournée est signée de la main d'un artisan. Jamais de production automatisée.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu preview -->
+  <section class="menu-preview" id="carte" aria-labelledby="menuTitle">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">La Carte</span>
+        <h2 class="section-title" id="menuTitle"><em>Pains</em>, viennoiseries &amp; douceurs</h2>
+        <p class="section-body">Une sélection restreinte, choisie avec soin. Certaines pièces sont en édition limitée.</p>
+      </div>
+      <div class="menu-tabs" role="tablist" aria-label="Catégories de produits">
+        <button class="menu-tab active" role="tab" aria-selected="true" aria-controls="tab-pains" id="btn-pains">Pains</button>
+        <button class="menu-tab" role="tab" aria-selected="false" aria-controls="tab-viennoiseries" id="btn-viennoiseries">Viennoiseries</button>
+        <button class="menu-tab" role="tab" aria-selected="false" aria-controls="tab-patisseries" id="btn-patisseries">Pâtisseries</button>
+      </div>
+      <div id="tab-pains" class="menu-list active" role="tabpanel" aria-labelledby="btn-pains">
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Baguette Tradition</p><p class="menu-item-desc">Levain naturel, farine T65</p></div><span class="menu-item-price">1,40 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Pain de Campagne</p><p class="menu-item-desc">Mie dense, croûte épaisse, 800g</p></div><span class="menu-item-price">5,20 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Pain au Levain</p><p class="menu-item-desc">Levain centenaire, cuisson sur sole</p></div><span class="menu-item-price">6,80 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Épi de Blé</p><p class="menu-item-desc">Baguette façonnée en épi, croustillante</p></div><span class="menu-item-price">1,60 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Pain aux Noix</p><p class="menu-item-desc">Noix de Grenoble, miel de forêt</p></div><span class="menu-item-price">4,50 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Pain Seigle &amp; Graines</p><p class="menu-item-desc">Tournesol, lin, courge — 100% seigle</p></div><span class="menu-item-price">5,80 €</span></div>
+      </div>
+      <div id="tab-viennoiseries" class="menu-list" role="tabpanel" aria-labelledby="btn-viennoiseries" hidden>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Croissant au Beurre</p><p class="menu-item-desc">Beurre AOP Charentes-Poitou</p></div><span class="menu-item-price">1,60 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Pain au Chocolat</p><p class="menu-item-desc">Double barre de chocolat noir 70%</p></div><span class="menu-item-price">1,80 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Pain aux Raisins</p><p class="menu-item-desc">Crème pâtissière vanille, raisins secs</p></div><span class="menu-item-price">2,00 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Brioche Feuilletée</p><p class="menu-item-desc">Cassonade, beurre, effilochée à la main</p></div><span class="menu-item-price">2,40 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Kouign-Amann</p><p class="menu-item-desc">Recette bretonne traditionnelle</p></div><span class="menu-item-price">3,20 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Chausson aux Pommes</p><p class="menu-item-desc">Pommes fondantes, canelle douce</p></div><span class="menu-item-price">2,20 €</span></div>
+      </div>
+      <div id="tab-patisseries" class="menu-list" role="tabpanel" aria-labelledby="btn-patisseries" hidden>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Tarte au Citron Meringuée</p><p class="menu-item-desc">Citrons de Menton, meringue italienne</p></div><span class="menu-item-price">4,80 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Éclair au Café</p><p class="menu-item-desc">Café Arabica, glaçage fondant</p></div><span class="menu-item-price">3,60 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Mille-Feuille</p><p class="menu-item-desc">Feuilletage inversé, crème diplomate</p></div><span class="menu-item-price">4,20 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Flan Parisien</p><p class="menu-item-desc">Pâte brisée, crème vanille, flan épais</p></div><span class="menu-item-price">3,80 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Paris-Brest</p><p class="menu-item-desc">Pâte à chou, praliné noisette maison</p></div><span class="menu-item-price">5,20 €</span></div>
+        <div class="menu-item"><div class="menu-item-info"><p class="menu-item-name">Tarte Tatin</p><p class="menu-item-desc">Pommes caramélisées, pâte feuilletée</p></div><span class="menu-item-price">4,60 €</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <div class="gallery" aria-label="Galerie photo de la boulangerie">
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1549931319-a545dcf3bc7c?w=700&q=80&auto=format&fit=crop" alt="Assortiment de pains artisanaux" loading="lazy" width="700" height="480" />
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1600617546213-a9e5aa7c2b5b?w=400&q=80&auto=format&fit=crop" alt="Croissants dorés" loading="lazy" width="400" height="240" />
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80&auto=format&fit=crop" alt="Pâtisseries fraîches" loading="lazy" width="400" height="240" />
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1464454709131-ffd692591ee5?w=400&q=80&auto=format&fit=crop" alt="Intérieur boulangerie" loading="lazy" width="400" height="240" />
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80&auto=format&fit=crop" alt="Tarte aux fruits de saison" loading="lazy" width="400" height="240" />
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&q=80&auto=format&fit=crop" alt="Pain sorti du four" loading="lazy" width="400" height="240" />
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=400&q=80&auto=format&fit=crop" alt="Détail mie de pain alvéolée" loading="lazy" width="400" height="240" />
+    </div>
+  </div>
+
+  <!-- Testimonials -->
+  <section class="testimonials" aria-labelledby="testiTitle">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Ce qu'ils disent</span>
+        <h2 class="section-title" id="testiTitle">La voix de <em>nos clients</em></h2>
+      </div>
+      <div class="testimonials-grid">
+        <article class="testimonial-card reveal">
+          <div class="testimonial-stars" aria-label="Note : 5 étoiles sur 5">
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p class="testimonial-text">"La meilleure baguette que j'aie mangée depuis que j'habite Paris. La croûte est à la fois fine et craquante, la mie généreuse. On y retourne chaque matin."</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://i.pravatar.cc/80?img=47" alt="" aria-hidden="true" width="42" height="42" />
+            <div>
+              <p class="testimonial-name">Claire Dupont</p>
+              <p class="testimonial-location">Montmartre, Paris</p>
+            </div>
+          </div>
+        </article>
+        <article class="testimonial-card reveal">
+          <div class="testimonial-stars" aria-label="Note : 5 étoiles sur 5">
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p class="testimonial-text">"Je commande les croissants pour tous mes brunchs du dimanche. Les invités ne croient jamais que ce sont des viennoiseries du quartier — ils pensent que j'ai commandé à un grand chef."</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://i.pravatar.cc/80?img=32" alt="" aria-hidden="true" width="42" height="42" />
+            <div>
+              <p class="testimonial-name">Étienne Marchand</p>
+              <p class="testimonial-location">Pigalle, Paris</p>
+            </div>
+          </div>
+        </article>
+        <article class="testimonial-card reveal">
+          <div class="testimonial-stars" aria-label="Note : 5 étoiles sur 5">
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p class="testimonial-text">"Le pain au levain est exceptionnel. Une acidité douce, une mie ouverte, une croûte qui chante quand on la rompt. Cela faisait des années que je cherchais ça à Paris."</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://i.pravatar.cc/80?img=12" alt="" aria-hidden="true" width="42" height="42" />
+            <div>
+              <p class="testimonial-name">Margaux Lefèvre</p>
+              <p class="testimonial-location">Batignolles, Paris</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="newsletter" aria-labelledby="nlTitle">
+    <div class="newsletter-inner">
+      <h2 class="newsletter-title" id="nlTitle">Les nouvelles du fournil</h2>
+      <p class="newsletter-sub">Recevez nos créations du moment, les pains de saison et les événements de la boulangerie directement dans votre boîte mail.</p>
+      <form class="newsletter-form" onsubmit="handleNewsletter(event)" aria-label="Inscription à la newsletter">
+        <label for="nlEmail" class="sr-only">Votre adresse email</label>
+        <input class="newsletter-input" id="nlEmail" type="email" placeholder="votre@email.fr" required autocomplete="email" />
+        <button class="newsletter-btn" type="submit">S'inscrire</button>
+      </form>
+      <p class="newsletter-note" role="status" id="nlStatus">Pas de spam. Désinscription en un clic.</p>
+    </div>
+  </section>
+
+  <!-- Contact / Footer -->
+  <footer class="contact" id="contact">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-brand reveal">
+          <p class="contact-logo">Boulangerie Dorée</p>
+          <p class="contact-tagline">Artisan boulanger depuis 1987</p>
+          <p class="contact-desc">Un fournil au cœur de Montmartre, où chaque pain est une histoire de patience, de passion et de farine fraîche.</p>
+          <div class="contact-social" aria-label="Nos réseaux sociaux">
+            <a href="#" class="social-link" aria-label="Instagram">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Facebook">
+              <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Google Maps">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="reveal">
+          <h3 class="contact-heading">Nous trouver</h3>
+          <div class="contact-info-item">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <p class="contact-info-text">14, rue Lepic<br>75018 Paris<br>Métro Abbesses (L12)</p>
+          </div>
+          <div class="contact-info-item">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.13 1 .37 1.97.72 2.9a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6.06 6.06l.86-.86a2 2 0 0 1 2.11-.45c.93.35 1.9.59 2.9.72A2 2 0 0 1 22 16.92z"/></svg>
+            <p class="contact-info-text">+33 (0)1 42 54 XX XX</p>
+          </div>
+          <div class="contact-info-item">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <p class="contact-info-text">contact@boulangeriedoree.fr</p>
+          </div>
+        </div>
+        <div class="reveal">
+          <h3 class="contact-heading">Horaires</h3>
+          <div class="contact-info-item">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <p class="contact-info-text">
+              Lundi – Vendredi : 7h00 – 20h00<br>
+              Samedi : 6h30 – 20h30<br>
+              Dimanche : 7h00 – 13h00<br>
+              <br>
+              <em style="color:rgba(201,145,58,.8); font-style:italic;">Fermé le mardi</em>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2024 Boulangerie Dorée · Tous droits réservés</p>
+        <nav class="footer-links" aria-label="Liens légaux">
+          <a href="#">Mentions légales</a>
+          <a href="#">Politique de confidentialité</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CreateOS badge -->
+  <style>
+    #createos-badge {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 999px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+      font-size: 11px;
+      font-weight: 500;
+      color: #374151;
+      text-decoration: none;
+      font-family: system-ui, sans-serif;
+    }
+    #createos-badge:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    #createos-badge img { width: 14px; height: 14px; }
+  </style>
+  <a id="createos-badge" href="https://createos.sh/app" target="_blank" rel="noopener noreferrer">
+    <img src="https://nodeops.network/SymbolBlack.svg" alt="" />
+    Built with CreateOS
+  </a>
+
+  <script>
+    // Nav scroll shadow
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+
+    // Mobile menu
+    const toggle = document.getElementById('navToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuClose = document.getElementById('menuClose');
+    function openMobileMenu() {
+      mobileMenu.classList.add('open');
+      mobileMenu.removeAttribute('aria-hidden');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    toggle.addEventListener('click', openMobileMenu);
+    menuClose.addEventListener('click', closeMobileMenu);
+    mobileMenu.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileMenu(); });
+
+    // Menu tabs
+    const tabs = document.querySelectorAll('.menu-tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        document.querySelectorAll('.menu-list').forEach(l => {
+          l.classList.remove('active');
+          l.hidden = true;
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        const panel = document.getElementById(tab.getAttribute('aria-controls'));
+        panel.classList.add('active');
+        panel.hidden = false;
+      });
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+
+    // Newsletter
+    function handleNewsletter(e) {
+      e.preventDefault();
+      const status = document.getElementById('nlStatus');
+      const input = document.getElementById('nlEmail');
+      status.textContent = '✓ Merci ! Vous êtes inscrit(e) à nos nouvelles du fournil.';
+      input.value = '';
+    }
+  </script>
+</body>
+</html>
